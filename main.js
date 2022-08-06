@@ -1,6 +1,7 @@
 let container = document.querySelector('.container');
 let numberOfRowsAndColumns = 16 ;
 let button = document.querySelector('#sizebtn');
+let reset = document.querySelector('#reset');
 
 
 
@@ -38,6 +39,10 @@ function changeGridSize(){
     gridDivs.forEach(gridDiv => gridDiv.addEventListener('mouseover' , changeColor));
 
 }
+function resetColor(){
+    let gridDivs = document.querySelectorAll('.column');
+    gridDivs.forEach(gridDiv => gridDiv.style.backgroundColor = "white");
+}
 
 
 
@@ -46,5 +51,6 @@ makeTheGrid();
 let gridDivs = document.querySelectorAll('.column');
 gridDivs.forEach(gridDiv => gridDiv.addEventListener('mouseover' , changeColor));
 button.addEventListener('click', changeGridSize);
+reset.addEventListener('click', resetColor )
 
 
