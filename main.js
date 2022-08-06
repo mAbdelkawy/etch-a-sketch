@@ -1,5 +1,7 @@
 let container = document.querySelector('.container');
 let numberOfRowsAndColumns = 16 ;
+let button = document.querySelector('#sizebtn');
+
 
 
 
@@ -22,8 +24,27 @@ function makeTheGrid(){
 function changeColor(){
     this.style.backgroundColor = "pink";
 }
+function changeGridSize(){
+    let promptSize = prompt('Enter the size of the grid');
+    while (isNaN(promptSize) || promptSize < 1 || promptSize > 100) {
+        alert("you must enter a number between 1 and 100");
+        promptSize = prompt('Enter the size of the grid');
+    }
+
+    numberOfRowsAndColumns = promptSize ;
+    container.innerHTML = "";
+    makeTheGrid();
+    let gridDivs = document.querySelectorAll('.column');
+    gridDivs.forEach(gridDiv => gridDiv.addEventListener('mouseover' , changeColor));
+
+}
+
+
+
 makeTheGrid();
 
 let gridDivs = document.querySelectorAll('.column');
 gridDivs.forEach(gridDiv => gridDiv.addEventListener('mouseover' , changeColor));
+button.addEventListener('click', changeGridSize);
+
 
