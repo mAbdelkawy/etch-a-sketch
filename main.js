@@ -19,5 +19,11 @@ function makeTheGrid(){
     }
     
 }
-
+function changeColor(){
+    this.style.backgroundColor = "pink";
+}
 makeTheGrid();
+
+let gridDivs = document.querySelectorAll('.column');
+gridDivs.forEach(gridDiv => gridDiv.addEventListener('mouseover' , changeColor));
+
