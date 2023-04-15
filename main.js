@@ -111,7 +111,8 @@ function syncBorderWithButton(){
 }
 
 // changes the div background color when you hover over it
-function listenToHover(){
+function listenToHover(event){
+    event.preventDefault();
     let gridDivs = document.querySelectorAll('.column');
     gridDivs.forEach(gridDiv => gridDiv.addEventListener('mouseover' , changeColor));
     container.addEventListener('mouseup', removeListenToHover);
