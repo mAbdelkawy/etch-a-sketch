@@ -1,92 +1,97 @@
-// Basic definitions
-const container = document.querySelector(".container");
-const changeGridSizeBtn = document.querySelector("#sizebtn");
-const resetBtn = document.querySelector("#reset");
-const removeBordersBtn = document.querySelector("#removeBorders");
-let numberOfRowsAndColumns = 16;
+// Get DOM elements
+const containerEl = document.querySelector(".container");
+const changeSizeBtn = document.querySelector("#changeSizeBtn");
+const resetBtn = document.querySelector("#resetBtn");
+const toggleBordersBtn = document.querySelector("#toggleBordersBtn");
 
-// Function to create the starting grid
-function makeTheGrid() {
-  container.innerHTML = ""; // Clear the container
-  for (let i = 0; i < numberOfRowsAndColumns; i++) {
+// Set initial grid size
+let gridSize = 16;
+
+// Function to create the grid
+function createGrid() {
+  containerEl.innerHTML = "";
+  for (let i = 0; i < gridSize; i++) {
     const rowDiv = document.createElement("div");
     rowDiv.classList.add("row");
-    for (let j = 0; j < numberOfRowsAndColumns; j++) {
-      const columnDiv = document.createElement("div");
-      columnDiv.classList.add("column");
-      rowDiv.appendChild(columnDiv);
+    for (let j = 0; j < gridSize; j++) {
+      const cellDiv = document.createElement("div");
+      cellDiv.classList.add("cell");
+      rowDiv.appendChild(cellDiv);
     }
-    container.appendChild(rowDiv);
+    containerEl.appendChild(rowDiv);
   }
-  syncBorderWithButton();
+  syncBordersWithButton();
 }
 
-// Function to change div background color on hover
+// Function to change cell background color on hover
 function changeColor() {
   this.style.backgroundColor = "pink";
 }
 
 // Function to change grid size
 function changeGridSize() {
-  let promptSize = prompt("Enter the size of the grid");
-  while (isNaN(promptSize) || promptSize < 1 || promptSize > 100) {
+  let newSize = prompt("Enter the new size of the grid (1-100)");
+  newSize = parseInt(newSize);
+  if (isNaN(newSize) || newSize < 1 || newSize > 100) {
     alert("You must enter a number between 1 and 100");
-    promptSize = prompt("Enter the size of the grid");
+    return;
   }
-  numberOfRowsAndColumns = promptSize;
-  makeTheGrid();
-  container.addEventListener("mousedown", listenToHover);
+  gridSize = newSize;
+  createGrid();
+  containerEl.addEventListener("mousedown", listenToHover);
 }
 
-// Function to reset div background color
+// Function to reset cell background color
 function resetColor() {
-  const gridDivs = document.querySelectorAll(".column");
-  gridDivs.forEach((gridDiv) => (gridDiv.style.backgroundColor = "white"));
+  const cellDivs = document.querySelectorAll(".cell");
+  cellDivs.forEach((cellDiv) => (cellDiv.style.backgroundColor = "white"));
 }
 
-// Function to toggle borders
-function removeAddBorders() {
-  const gridDivs = document.querySelectorAll(".column");
-  if (removeBordersBtn.textContent === "Add borders") {
-    gridDivs.forEach((gridDiv) => (gridDiv.style.border = "1px solid black"));
-    removeBordersBtn.textContent = "Remove borders";
-  } else if (removeBordersBtn.textContent === "Remove borders") {
-    gridDivs.forEach((gridDiv) => (gridDiv.style.border = "0"));
-    removeBordersBtn.textContent = "Add borders";
+// Function to toggle grid borders
+function toggleBorders() {
+  const cellDivs = document.querySelectorAll(".cell");
+  if (toggleBordersBtn.textContent === "Add Borders") {
+    cellDivs.forEach((cellDiv) => (cellDiv.style.border = "1px solid black"));
+    toggleBordersBtn.textContent = "Remove Borders";
+  } else {
+    cellDivs.forEach((cellDiv) => (cellDiv.style.border = "0"));
+    toggleBordersBtn.textContent = "Add Borders";
   }
 }
 
-// Function to sync borders with the button text
-function syncBorderWithButton() {
-  const gridDivs = document.querySelectorAll(".column");
-  if (removeBordersBtn.textContent === "Add borders") {
-    gridDivs.forEach((gridDiv) => (gridDiv.style.border = "0"));
-  } else if (removeBordersBtn.textContent === "Remove borders") {
-    gridDivs.forEach((gridDiv) => (gridDiv.style.border = "1px solid black"));
+// Function to sync border styles with button text
+function syncBordersWithButton() {
+  const cellDivs = document.querySelectorAll(".cell");
+  if (toggleBordersBtn.textContent === "Add Borders") {
+    cellDivs.forEach((cellDiv) => (cellDiv.style.border = "0"));
+  } else {
+    cellDivs.forEach((cellDiv) => (cellDiv.style.border = "1px solid black"));
   }
 }
 
-// Function to listen for hover events
+// Function to listen to hover event on cells
 function listenToHover(event) {
   event.preventDefault();
-  const gridDivs = document.querySelectorAll(".column");
-  gridDivs.forEach((gridDiv) =>
-    gridDiv.addEventListener("mouseover", changeColor)
+  const cellDivs = document.querySelectorAll(".cell");
+  cellDivs.forEach((cellDiv) =>
+    cellDiv.addEventListener("mouseover", changeColor)
   );
-  container.addEventListener("mouseup", removeListenToHover);
+  containerEl.addEventListener("mouseup", removeListenToHover);
 }
 
-// Function to remove hover effect
+// Function to remove hover event on cells
 function removeListenToHover() {
-  const gridDivs = document.querySelectorAll(".column");
-  gridDivs.forEach((gridDiv) =>
-    gridDiv.removeEventListener("mouseover", changeColor)
+  const cellDivs = document.querySelectorAll(".cell");
+  cellDivs.forEach((cellDiv) =>
+    cellDiv.removeEventListener("mouseover", changeColor)
   );
 }
+
+// Initial grid creation
+createGrid();
 
 // Event listeners
-makeTheGrid();
-container.addEventListener("mousedown", listenToHover);
-changeGridSizeBtn.addEventListener("click", changeGridSize);
+containerEl.addEventListener("mousedown", listenToHover);
+changeSizeBtn.addEventListener("click", changeGridSize);
 resetBtn.addEventListener("click", resetColor);
-removeBordersBtn.addEventListener("click", removeAddBorders);
+toggleBordersBtn.addEventListener("click", toggleBorders);
